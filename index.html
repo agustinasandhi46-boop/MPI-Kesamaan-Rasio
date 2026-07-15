@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPI: Kesamaan Rasio Kelas 6</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome untuk Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti untuk perayaan skor -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f0f9ff;
+            /* Latar belakang bernuansa matematika (Grid & Ikon Math) */
+            background-image: 
+                linear-gradient(rgba(14, 165, 233, 0.1) 1.5px, transparent 1.5px),
+                linear-gradient(90deg, rgba(14, 165, 233, 0.1) 1.5px, transparent 1.5px);
+            background-size: 30px 30px;
+        }
+        .font-fredoka {
+            font-family: 'Fredoka One', cursive;
+        }
+        .math-card {
+            box-shadow: 0 10px 0px 0px #bae6fd;
+            border: 3px solid #0284c7;
+        }
+        .btn-bounce {
+            transition: all 0.2s ease;
+        }
+        .btn-bounce:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 md:p-8">
+
+    <!-- Header Aplikasi -->
+    <header class="w-full max-w-4xl bg-white/95 backdrop-blur border-b-4 border-sky-500 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-md z-10">
+        <div class="flex items-center gap-3">
+            <div class="bg-sky-500 text-white p-3 rounded-xl shadow-inner">
+                <i class="fa-solid fa-calculator text-2xl animate-pulse"></i>
+            </div>
+            <div>
+                <h1 class="text-xl md:text-2xl font-fredoka text-sky-800">Petualangan Rasio</h1>
+                <p class="text-xs md:text-sm text-sky-600 font-semibold">Materi: Kesamaan Rasio (Rasio Senilai) - Kelas 6</p>
+            </div>
+        </div>
+        <div class="flex gap-2">
+            <button onclick="switchTab('beranda')" class="nav-btn px-4 py-2 bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold rounded-xl text-sm transition-all flex items-center gap-1">
+                <i class="fa-solid fa-house"></i> Beranda
+            </button>
+            <button onclick="switchTab('materi')" class="nav-btn px-4 py-2 bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold rounded-xl text-sm transition-all flex items-center gap-1">
+                <i class="fa-solid fa-book-open"></i> Belajar
+            </button>
+            <button onclick="switchTab('kuis')" class="nav-btn px-4 py-2 bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold rounded-xl text-sm transition-all flex items-center gap-1">
+                <i class="fa-solid fa-gamepad"></i> Kuis Interaktif
+            </button>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="w-full max-w-4xl my-6 flex-grow flex items-center justify-center">
+        
+        <!-- SECTION 1: BERANDA -->
+        <section id="tab-beranda" class="w-full bg-white/90 backdrop-blur rounded-3xl p-6 md:p-10 math-card text-center flex flex-col items-center gap-6">
+            <div class="relative">
+                <div class="absolute -top-6 -left-6 text-yellow-400 text-4xl animate-bounce"><i class="fa-solid fa-star"></i></div>
+                <div class="absolute -bottom-6 -right-6 text-sky-400 text-4xl animate-pulse"><i class="fa-solid fa-compass"></i></div>
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='120' height='120'><circle cx='50' cy='50' r='45' fill='%230284c7'/><text x='50' y='65' font-family='Arial' font-size='45' font-weight='bold' fill='white' text-anchor='middle'>A:B</text></svg>" alt="Logo Rasio" class="mx-auto drop-shadow-lg">
+            </div>
+            
+            <h2 class="text-3xl md:text-4xl font-fredoka text-sky-900 leading-tight">
+                Halo Sobat Matematika! 👋 <br>Mari Taklukkan <span class="text-sky-600">Kesamaan Rasio!</span>
+            </h2>
+            <p class="text-gray-600 max-w-xl text-base md:text-lg">
+                Rasio adalah membandingkan dua nilai. Di aplikasi ini, kamu akan belajar cara menyetarakan rasio secara seru dengan simulasi interaktif dan kuis berhadiah sertifikat kelulusan!
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 w-full justify-center mt-4">
+                <button onclick="switchTab('materi')" class="btn-bounce px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-fredoka text-lg rounded-2xl shadow-lg shadow-emerald-200 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-play"></i> Mulai Belajar
+                </button>
+                <button onclick="switchTab('kuis')" class="btn-bounce px-8 py-4 bg-sky-500 hover:bg-sky-600 text-white font-fredoka text-lg rounded-2xl shadow-lg shadow-sky-200 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-trophy"></i> Tantangan Kuis
+                </button>
+            </div>
+
+            <!-- Petunjuk Penggunaan -->
+            <div class="bg-sky-50 border-2 border-sky-200 rounded-xl p-4 mt-4 text-left w-full max-w-lg">
+                <h4 class="font-bold text-sky-800 mb-2"><i class="fa-solid fa-circle-info"></i> Petunjuk Belajar:</h4>
+                <ul class="text-sm text-sky-950 space-y-1 list-disc list-inside">
+                    <li>Buka menu <b>Belajar</b> untuk mencoba simulasi kesamaan rasio.</li>
+                    <li>Uji kemampuanmu di menu <b>Kuis Interaktif</b> (ada 10 soal seru!).</li>
+                    <li>Selesaikan kuis dengan nilai terbaik untuk mendapat lencana bintang!</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECTION 2: MATERI & SIMULASI -->
+        <section id="tab-materi" class="w-full bg-white/90 backdrop-blur rounded-3xl p-6 md:p-8 math-card hidden">
+            <h2 class="text-2xl md:text-3xl font-fredoka text-sky-900 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-book-open-reader text-sky-600"></i> Memahami Kesamaan Rasio
+            </h2>
+            
+            <!-- Penjelasan Konsep -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-5 shadow-inner">
+                    <span class="bg-amber-400 text-amber-950 text-xs font-bold px-2 py-1 rounded-md">Konsep Dasar</span>
+                    <h3 class="text-xl font-bold text-amber-900 mt-2 mb-2">Apa itu Kesamaan Rasio?</h3>
+                    <p class="text-sm text-amber-950 leading-relaxed">
+                        Dua rasio dikatakan <b>sama (senilai)</b> jika nilai perbandingannya sama setelah disederhanakan. 
+                        <br><br>
+                        Misalnya, rasio <span class="bg-amber-200 px-1.5 py-0.5 rounded font-bold">1 : 2</span> sama nilainya dengan <span class="bg-amber-200 px-1.5 py-0.5 rounded font-bold">2 : 4</span> atau <span class="bg-amber-200 px-1.5 py-0.5 rounded font-bold">3 : 6</span>.
+                        Kita bisa mencari rasio senilai dengan cara <b>mengalikan</b> atau <b>membagi</b> kedua angka rasio dengan bilangan yang sama!
+                    </p>
+                </div>
+
+                <div class="bg-indigo-50 border-2 border-indigo-300 rounded-2xl p-5 shadow-inner flex flex-col justify-between">
+                    <div>
+                        <span class="bg-indigo-400 text-white text-xs font-bold px-2 py-1 rounded-md">Rumus Cepat</span>
+                        <h3 class="text-xl font-bold text-indigo-900 mt-2 mb-1">Menemukan Nilai yang Hilang</h3>
+                        <p class="text-xs text-indigo-950 mb-3">Jika rasio <span class="font-bold">A : B = C : D</span>, maka:</p>
+                        <div class="bg-white/80 p-3 rounded-lg border border-indigo-200 font-mono text-center text-sm">
+                            <p class="font-bold text-indigo-600">A / B = C / D</p>
+                            <p class="text-gray-600 mt-1">Maka, <span class="text-pink-600 font-bold">A × D = B × C</span></p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-indigo-800 italic mt-2">"Hasil perkalian silang pada rasio senilai adalah selalu SAMA!"</p>
+                </div>
+            </div>
+
+            <!-- Alat Simulasi Interaktif -->
+            <div class="bg-sky-50 border-2 border-sky-300 rounded-3xl p-6">
+                <h3 class="text-lg font-bold text-sky-900 mb-4 text-center"><i class="fa-solid fa-sliders"></i> Simulasi Rasio Senilai (Kotak Warna)</h3>
+                
+                <div class="flex flex-col md:flex-row gap-6 items-center justify-around">
+                    <!-- Rasio Asli (Kiri) -->
+                    <div class="bg-white p-4 rounded-2xl border-2 border-sky-200 shadow-md w-full md:w-5/12 text-center">
+                        <h4 class="font-bold text-sky-800 mb-2">Rasio Dasar (1 : 2)</h4>
+                        <div class="flex justify-center gap-2 mb-4" id="sim-basic-grid">
+                            <!-- JS will inject shapes -->
+                        </div>
+                        <div class="p-2 bg-sky-100 rounded-xl font-fredoka text-xl text-sky-700">
+                            1 Merah : 2 Biru
+                        </div>
+                    </div>
+
+                    <!-- Hubungan Perkalian (Tengah) -->
+                    <div class="text-center font-bold text-sky-700 text-3xl">
+                        <div class="hidden md:block">
+                            <i class="fa-solid fa-arrow-right"></i>
+                            <div class="text-xs mt-1" id="multiplier-label">dikali 2</div>
+                        </div>
+                        <div class="block md:hidden my-2">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </div>
+                    </div>
+
+                    <!-- Rasio Dinamis (Kanan) -->
+                    <div class="bg-white p-4 rounded-2xl border-2 border-sky-200 shadow-md w-full md:w-5/12 text-center">
+                        <h4 class="font-bold text-sky-800 mb-2">Rasio Baru (Senilai)</h4>
+                        <div class="flex flex-wrap justify-center gap-2 mb-4 min-h-[48px]" id="sim-dynamic-grid">
+                            <!-- JS will inject shapes -->
+                        </div>
+                        
+                        <div class="flex items-center justify-center gap-4 mt-2">
+                            <button onclick="adjustSim(-1)" class="w-10 h-10 bg-red-100 hover:bg-red-200 text-red-700 rounded-full font-bold flex items-center justify-center border border-red-300">-</button>
+                            <span class="font-fredoka text-xl text-sky-800" id="sim-ratio-text">2 : 4</span>
+                            <button onclick="adjustSim(1)" class="w-10 h-10 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-full font-bold flex items-center justify-center border border-emerald-300">+</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center text-xs text-sky-600 mt-4">Geser tombol tambah (+) atau kurang (-) untuk melihat bagaimana rasio dasar berkembang menjadi rasio yang lebih besar namun tetap senilai!</p>
+            </div>
+        </section>
+
+        <!-- SECTION 3: KUIS INTERAKTIF -->
+        <section id="tab-kuis" class="w-full bg-white/90 backdrop-blur rounded-3xl p-6 md:p-8 math-card hidden">
+            <!-- Setup Peserta Kuis -->
+            <div id="quiz-setup" class="text-center py-6">
+                <i class="fa-solid fa-graduation-cap text-5xl text-sky-500 mb-4"></i>
+                <h3 class="text-2xl font-fredoka text-sky-900 mb-2">Siap untuk Kuis Matematika?</h3>
+                <p class="text-gray-600 mb-6 max-w-md mx-auto">Masukkan namamu untuk dicetak pada lembar sertifikat kelulusan di akhir kuis!</p>
+                
+                <div class="max-w-xs mx-auto mb-6">
+                    <input type="text" id="student-name" placeholder="Ketik namamu di sini..." class="w-full p-3 border-2 border-sky-300 rounded-xl text-center font-bold text-sky-800 focus:outline-none focus:border-sky-500">
+                </div>
+                
+                <button onclick="startQuiz()" class="btn-bounce px-8 py-3 bg-sky-500 hover:bg-sky-600 text-white font-fredoka text-lg rounded-xl shadow-lg">
+                    Mulai Sekarang!
+                </button>
+            </div>
+
+            <!-- Tampilan Soal Aktif -->
+            <div id="quiz-game" class="hidden">
+                <!-- Info Progress -->
+                <div class="flex justify-between items-center mb-4">
+                    <div class="text-xs md:text-sm font-bold text-sky-800 bg-sky-100 px-3 py-1.5 rounded-lg">
+                        Soal <span id="current-question-num">1</span> dari 10
+                    </div>
+                    <div class="text-xs md:text-sm font-bold text-emerald-700 bg-emerald-100 px-3 py-1.5 rounded-lg">
+                        Skor: <span id="current-score">0</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-100 rounded-full h-3 mb-6 overflow-hidden">
+                    <div id="quiz-progress-bar" class="bg-gradient-to-r from-sky-400 to-emerald-400 h-full transition-all duration-300" style="width: 10%;"></div>
+                </div>
+
+                <!-- Area Pertanyaan -->
+                <div class="bg-sky-50/70 rounded-2xl p-5 mb-6 border border-sky-100">
+                    <p id="question-text" class="text-base md:text-lg font-bold text-sky-950 leading-relaxed">
+                        Pertanyaan akan muncul di sini...
+                    </p>
+                </div>
+
+                <!-- Pilihan Jawaban -->
+                <div class="grid grid-cols-1 gap-3 mb-6" id="options-container">
+                    <!-- Pilihan jawaban di-render oleh JS -->
+                </div>
+
+                <!-- Kotak Pembahasan (Akan tampil setelah menjawab) -->
+                <div id="feedback-box" class="hidden rounded-2xl p-5 border-2 mb-6 transform scale-95 transition-all duration-300">
+                    <div class="flex items-start gap-3">
+                        <span id="feedback-icon" class="text-2xl"></span>
+                        <div>
+                            <h4 id="feedback-title" class="font-bold text-base mb-1">Judul Feedback</h4>
+                            <p id="feedback-text" class="text-sm leading-relaxed">Pembahasan soal akan ditampilkan secara lengkap di sini.</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-end">
+                        <button id="btn-next-question" onclick="nextQuestion()" class="px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl text-sm shadow-md flex items-center gap-1.5">
+                            Soal Berikutnya <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tampilan Hasil / Skor Akhir -->
+            <div id="quiz-result" class="hidden text-center py-6">
+                <i class="fa-solid fa-trophy text-6xl text-amber-400 mb-3 animate-bounce"></i>
+                <h3 class="text-3xl font-fredoka text-sky-950 mb-2">Kuis Selesai!</h3>
+                <p class="text-gray-600 text-lg mb-1">Hebat sekali, <span id="display-student-name" class="font-bold text-sky-700">Nama Murid</span>!</p>
+                <p class="text-sm text-gray-500 mb-6">Kamu telah menyelesaikan tantangan Kesamaan Rasio.</p>
+
+                <!-- Nilai -->
+                <div class="bg-sky-50 rounded-2xl p-6 max-w-sm mx-auto border border-sky-100 mb-8 shadow-inner">
+                    <div class="text-sm font-bold text-sky-600 uppercase tracking-wider">Nilai Kamu</div>
+                    <div class="text-6xl font-fredoka text-sky-900 my-2" id="final-score">0</div>
+                    <div class="text-sm text-gray-600" id="final-stats">Menjawab benar 0 dari 10 soal</div>
+                </div>
+
+                <!-- Sertifikat Kecil -->
+                <div class="max-w-md mx-auto bg-white border-8 border-double border-amber-600 rounded-xl p-6 shadow-md mb-8 text-left relative">
+                    <div class="absolute top-2 right-2 text-amber-500 opacity-20 text-7xl"><i class="fa-solid fa-award"></i></div>
+                    <div class="text-center font-serif text-2xl font-bold text-amber-800 tracking-wide mb-4">PIAGAM PENGHARGAAN</div>
+                    <p class="text-center text-xs text-gray-500 italic mb-4">Diberikan dengan penuh apresiasi kepada:</p>
+                    <p class="text-center text-xl font-bold font-fredoka text-sky-900 border-b-2 border-gray-200 pb-2 w-10/12 mx-auto" id="cert-name">Nama Murid</p>
+                    <p class="text-center text-xs text-gray-600 mt-4 leading-relaxed">
+                        Atas keberhasilan luar biasa dalam memahami materi Matematika Kelas 6:<br>
+                        <b class="text-sky-800">"Kesamaan Rasio (Rasio Senilai)"</b>
+                    </p>
+                    <div class="flex justify-between items-end mt-8 text-xs text-gray-500">
+                        <div>
+                            <p>Instruktur:</p>
+                            <p class="font-bold text-gray-700 mt-4">Guru Kelas 6</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="italic" id="cert-date">Tanggal: -</p>
+                            <p class="text-amber-600 font-bold mt-4"><i class="fa-solid fa-circle-check"></i> Terverifikasi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="resetQuiz()" class="px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl shadow-md">
+                        <i class="fa-solid fa-rotate-left"></i> Ulangi Kuis
+                    </button>
+                    <button onclick="switchTab('materi')" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-md">
+                        <i class="fa-solid fa-book-open"></i> Pelajari Lagi Materi
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Keterangan -->
+    <footer class="w-full max-w-4xl text-center text-xs text-sky-700 font-semibold py-4 bg-sky-100/50 backdrop-blur rounded-2xl border border-sky-100 shadow-sm">
+        Disusun khusus untuk mempermudah murid Kelas 6 memahami perbandingan senilai. Semoga Menyenangkan! 🚀
+    </footer>
+
+    <!-- JavaScript Aplikasi -->
+    <script>
+        // DATA SOAL KUIS (10 Soal Pilihan Ganda Detail dengan Pembahasan Lengkap)
+        const quizData = [
+            {
+                question: "Rasio jumlah buku cerita Susi terhadap buku pelajaran Adi adalah 2 : 3. Jika Susi memiliki 8 buku cerita, berapakah jumlah buku pelajaran Adi agar rasionya sama?",
+                options: [
+                    { key: "A", text: "10 buku", desc: "Salah. Jika buku Adi 10, rasionya menjadi 8:10 = 4:5 (tidak sama dengan 2:3)." },
+                    { key: "B", text: "12 buku", desc: "Benar! Rasio dasar 2 : 3. Susi memiliki 8 buku (2 dikali 4). Maka buku Adi adalah 3 dikali 4 = 12 buku." },
+                    { key: "C", text: "14 buku", desc: "Salah. Jika buku Adi 14, rasionya menjadi 8:14 = 4:7 (tidak sama dengan 2:3)." },
+                    { key: "D", text: "16 buku", desc: "Salah. Jika buku Adi 16, rasionya menjadi 8:16 = 1:2 (tidak sama dengan 2:3)." }
+                ],
+                correct: "B",
+                explanation: "Rasio buku cerita terhadap buku pelajaran = 2 : 3. Jika buku cerita (nilai 2) menjadi 8 (dikali 4), maka buku pelajaran (nilai 3) juga harus dikalikan 4. Hasilnya adalah 3 × 4 = 12."
+            },
+            {
+                question: "Carilah nilai x yang memenuhi kesamaan rasio berikut ini: 4 : 5 = 12 : x.",
+                options: [
+                    { key: "A", text: "x = 13", desc: "Salah. 13 tidak memiliki hubungan kelipatan dengan 5." },
+                    { key: "B", text: "x = 14", desc: "Salah. Rasio 12 : 14 disederhanakan menjadi 6 : 7." },
+                    { key: "C", text: "x = 15", desc: "Benar! Dari angka 4 menjadi 12 dikalikan 3. Maka angka 5 juga harus dikalikan 3, sehingga x = 15." },
+                    { key: "D", text: "x = 20", desc: "Salah. Jika x = 20, rasionya menjadi 12:20 = 3:5." }
+                ],
+                correct: "C",
+                explanation: "Untuk menyamakan 4 : 5 dan 12 : x, kita lihat angka pertamanya. Dari 4 menjadi 12 itu dikalikan 3. Oleh karena itu, angka kedua (5) juga harus dikalikan 3. 5 × 3 = 15."
+            },
+            {
+                question: "Ibu mencampurkan sirup merah dan air putih dengan rasio 1 : 4 untuk membuat es sirup yang manis. Jika Ibu menggunakan 100 ml sirup merah, berapakah air putih yang diperlukan agar rasanya tetap sama?",
+                options: [
+                    { key: "A", text: "200 ml", desc: "Salah. Rasio 100 : 200 sama dengan 1 : 2." },
+                    { key: "B", text: "300 ml", desc: "Salah. Rasio 100 : 300 sama dengan 1 : 3." },
+                    { key: "C", text: "400 ml", desc: "Benar! Rasio dasar 1 : 4. Jika sirup merah 100 ml (1 dikali 100), maka air putih harus 4 dikali 100 = 400 ml." },
+                    { key: "D", text: "500 ml", desc: "Salah. Rasio 100 : 500 sama dengan 1 : 5." }
+                ],
+                correct: "C",
+                explanation: "Rasio sirup : air = 1 : 4. Jika sirup = 100 ml (dikali 100 dari rasio dasar), maka air putih = 4 × 100 ml = 400 ml."
+            },
+            {
+                question: "Di sebuah kolam ikan hias, rasio ikan koi terhadap ikan koki adalah 3 : 5. Jika total ikan koi di dalam kolam adalah 15 ekor, berapakah jumlah ikan koki?",
+                options: [
+                    { key: "A", text: "20 ekor", desc: "Salah. Rasio 15 : 20 disederhanakan menjadi 3 : 4." },
+                    { key: "B", text: "25 ekor", desc: "Benar! Rasio dasar koi : koki adalah 3 : 5. Jumlah koi ada 15 (3 dikali 5). Maka jumlah koki adalah 5 dikali 5 = 25 ekor." },
+                    { key: "C", text: "30 ekor", desc: "Salah. Rasio 15 : 30 disederhanakan menjadi 1 : 2." },
+                    { key: "D", text: "35 ekor", desc: "Salah. Rasio 15 : 35 disederhanakan menjadi 3 : 7." }
+                ],
+                correct: "B",
+                explanation: "Rasio koi (3) : koki (5). Diketahui koi = 15 (berasal dari 3 × 5). Maka koki harus dikalikan faktor pengali yang sama yaitu 5: 5 × 5 = 25 ekor."
+            },
+            {
+                question: "Manakah di bawah ini pasangan rasio yang memiliki kesamaan rasio (senilai)?",
+                options: [
+                    { key: "A", text: "2 : 3 dan 4 : 9", desc: "Salah. 4 : 9 tidak bisa disederhanakan menjadi 2 : 3." },
+                    { key: "B", text: "3 : 4 dan 6 : 8", desc: "Benar! Jika rasio 6 : 8 kita bagi masing-masing angkanya dengan 2, maka hasilnya adalah 3 : 4." },
+                    { key: "C", text: "1 : 5 dan 5 : 10", desc: "Salah. 5 : 10 sama nilainya dengan 1 : 2." },
+                    { key: "D", text: "5 : 6 dan 10 : 15", desc: "Salah. 10 : 15 sama nilainya dengan 2 : 3." }
+                ],
+                correct: "B",
+                explanation: "Rasio 6 : 8 jika disederhanakan dengan membagi kedua bilangan dengan FPB-nya (yaitu 2) akan menjadi 3 : 4. Sehingga 3 : 4 = 6 : 8."
+            },
+            {
+                question: "Rasio tinggi badan Andi dibanding tinggi badan Budi adalah 6 : 7. Jika tinggi badan Andi adalah 120 cm, maka tinggi badan Budi adalah...",
+                options: [
+                    { key: "A", text: "130 cm", desc: "Salah. Rasio 120 : 130 adalah 12 : 13." },
+                    { key: "B", text: "135 cm", desc: "Salah. Rasio 120 : 135 adalah 8 : 9." },
+                    { key: "C", text: "140 cm", desc: "Benar! Dari 6 menjadi 120 itu dikali 20. Maka, tinggi Budi didapat dari 7 dikali 20 = 140 cm." },
+                    { key: "D", text: "150 cm", desc: "Salah. Rasio 120 : 150 adalah 4 : 5." }
+                ],
+                correct: "C",
+                explanation: "Rasio Andi : Budi = 6 : 7. Tinggi Andi = 120 cm. Faktor pengali = 120 ÷ 6 = 20. Maka tinggi Budi = 7 × 20 = 140 cm."
+            },
+            {
+                question: "Sebuah resep kue membutuhkan 2 butir telur untuk setiap 150 gram tepung terigu. Jika Dina ingin memakai 6 butir telur, berapakah tepung terigu yang harus dia siapkan?",
+                options: [
+                    { key: "A", text: "300 gram", desc: "Salah. 300 gram tepung hanya membutuhkan 4 butir telur." },
+                    { key: "B", text: "450 gram", desc: "Benar! 6 telur adalah 3 kali lipat dari 2 telur. Maka terigu juga harus 3 kali lipat: 150 gram × 3 = 450 gram." },
+                    { key: "C", text: "500 gram", desc: "Salah. Rasio 6 telur terhadap 500 gram tidak senilai dengan 2 : 150." },
+                    { key: "D", text: "600 gram", desc: "Salah. 600 gram tepung membutuhkan 8 butir telur." }
+                ],
+                correct: "B",
+                explanation: "Rasio telur : tepung = 2 : 150. Jika telur menjadi 6 (dikali 3), maka tepung terigu = 150 × 3 = 450 gram."
+            },
+            {
+                question: "Di kelas 6 SD Merdeka, rasio jumlah murid laki-laki terhadap perempuan adalah 4 : 5. Jika total murid laki-laki adalah 16 orang, berapakah total seluruh murid (laki-laki + perempuan) di kelas tersebut?",
+                options: [
+                    { key: "A", text: "20 orang", desc: "Salah. 20 adalah jumlah murid perempuan saja, bukan total seluruh murid kelas." },
+                    { key: "B", text: "32 orang", desc: "Salah. Rasio jumlah murid dengan total 32 tidak menghasilkan 4 : 5." },
+                    { key: "C", text: "36 orang", desc: "Benar! Murid laki-laki = 16 (4 × 4). Murid perempuan = 5 × 4 = 20 orang. Total murid = 16 + 20 = 36 orang." },
+                    { key: "D", text: "40 orang", desc: "Salah. Jika total 40 dengan rasio 4:5, murid laki-laki seharusnya 17,7 (tidak bulat)." }
+                ],
+                correct: "C",
+                explanation: "Rasio laki-laki = 4, perempuan = 5. Jika laki-laki = 16 (dikali 4), maka perempuan = 5 × 4 = 20. Total murid di kelas = 16 + 20 = 36 murid."
+            },
+            {
+                question: "Satu paket mainan berisi 3 robot dan 5 mobil-mobilan. Jika Adi membeli beberapa paket sehingga ia memiliki 15 mobil-mobilan, berapa banyak robot yang Adi miliki sekarang?",
+                options: [
+                    { key: "A", text: "6 robot", desc: "Salah. Rasio 6 : 15 disederhanakan menjadi 2 : 5." },
+                    { key: "B", text: "9 robot", desc: "Benar! Jumlah mobil menjadi 15 (5 dikali 3). Maka jumlah robot harus 3 dikali 3 = 9 robot." },
+                    { key: "C", text: "12 robot", desc: "Salah. Rasio 12 : 15 disederhanakan menjadi 4 : 5." },
+                    { key: "D", text: "15 robot", desc: "Salah. Rasio 15 : 15 sama dengan 1 : 1." }
+                ],
+                correct: "B",
+                explanation: "Rasio robot : mobil = 3 : 5. Jumlah mobil = 15 (dikali 3). Maka jumlah robot = 3 × 3 = 9 robot."
+            },
+            {
+                question: "Sebuah mobil menghabiskan 3 liter bensin untuk menempuh jarak 36 km. Dengan rasio yang sama, berapakah jarak yang dapat ditempuh mobil jika menggunakan 5 liter bensin?",
+                options: [
+                    { key: "A", text: "48 km", desc: "Salah. 48 km ditempuh dengan 4 liter bensin." },
+                    { key: "B", text: "50 km", desc: "Salah. Jarak ini tidak sesuai dengan kelipatan rasio konsumsi bensin." },
+                    { key: "C", text: "60 km", desc: "Benar! 1 liter bensin menempuh 12 km (36 km ÷ 3 liter). Jadi, jika ada 5 liter bensin, jarak yang ditempuh adalah 5 × 12 km = 60 km." },
+                    { key: "D", text: "72 km", desc: "Salah. 72 km ditempuh dengan 6 liter bensin." }
+                ],
+                correct: "C",
+                explanation: "Rasio bensin : jarak = 3 liter : 36 km (senilai dengan 1 liter : 12 km). Jika memiliki 5 liter, maka jarak yang ditempuh = 5 × 12 = 60 km."
+            }
+        ];
+
+        // STATE KUIS & SIMULASI
+        let currentScore = 0;
+        let currentQuestionIndex = 0;
+        let selectedOption = null;
+        let hasAnswered = false;
+        let simMultiplier = 2; // Default multiplier untuk simulasi materi
+
+        // INIT KETIKA LOAD
+        window.onload = function() {
+            renderSim();
+        }
+
+        // FUNGSI NAVIGASI TAB
+        function switchTab(tabId) {
+            // Sembunyikan semua tab
+            document.getElementById('tab-beranda').classList.add('hidden');
+            document.getElementById('tab-materi').classList.add('hidden');
+            document.getElementById('tab-kuis').classList.add('hidden');
+
+            // Tampilkan tab terpilih
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            // Reset tombol navigasi
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-sky-500', 'text-white');
+                btn.classList.add('bg-sky-100', 'text-sky-800');
+            });
+
+            // Beri warna aktif pada tombol yang ditekan
+            const clickedBtn = Array.from(buttons).find(btn => btn.textContent.toLowerCase().includes(tabId === 'kuis' ? 'kuis' : (tabId === 'materi' ? 'belajar' : 'beranda')));
+            if (clickedBtn) {
+                clickedBtn.classList.remove('bg-sky-100', 'text-sky-800');
+                clickedBtn.classList.add('bg-sky-500', 'text-white');
+            }
+        }
+
+        // FUNGSI SIMULASI MATERI
+        function renderSim() {
+            const basicGrid = document.getElementById('sim-basic-grid');
+            const dynamicGrid = document.getElementById('sim-dynamic-grid');
+            
+            // Render basic 1:2
+            basicGrid.innerHTML = `
+                <div class="w-10 h-10 rounded-xl bg-red-500 flex items-center justify-center text-white font-bold text-xs shadow-md">Merah</div>
+                <div class="w-10 h-10 rounded-xl bg-sky-500 flex items-center justify-center text-white font-bold text-xs shadow-md">Biru</div>
+                <div class="w-10 h-10 rounded-xl bg-sky-500 flex items-center justify-center text-white font-bold text-xs shadow-md">Biru</div>
+            `;
+
+            // Render dynamic based on multiplier
+            let dynamicHTML = '';
+            // Merah (1 * simMultiplier)
+            for(let i=0; i < 1 * simMultiplier; i++) {
+                dynamicHTML += `<div class="w-10 h-10 rounded-xl bg-red-500 flex items-center justify-center text-white font-bold text-xs shadow-md animate-bounce">Merah</div>`;
+            }
+            // Biru (2 * simMultiplier)
+            for(let i=0; i < 2 * simMultiplier; i++) {
+                dynamicHTML += `<div class="w-10 h-10 rounded-xl bg-sky-500 flex items-center justify-center text-white font-bold text-xs shadow-md animate-bounce">Biru</div>`;
+            }
+
+            dynamicGrid.innerHTML = dynamicHTML;
+            document.getElementById('sim-ratio-text').innerText = `${1 * simMultiplier} : ${2 * simMultiplier}`;
+            document.getElementById('multiplier-label').innerText = `dikali ${simMultiplier}`;
+        }
+
+        function adjustSim(change) {
+            const newVal = simMultiplier + change;
+            if (newVal >= 1 && newVal <= 5) {
+                simMultiplier = newVal;
+                renderSim();
+            }
+        }
+
+        // FUNGSI UTAMA KUIS
+        function startQuiz() {
+            const nameInput = document.getElementById('student-name').value.trim();
+            if (nameInput === "") {
+                // Modifikasi alert ke bentuk modal ramah anak
+                alert("Hei Sobat Matematika! Tuliskan namamu terlebih dahulu ya agar bisa dibuatkan piagam penghargaan!");
+                return;
+            }
+
+            // Simpan nama murid
+            document.getElementById('display-student-name').innerText = nameInput;
+            document.getElementById('cert-name').innerText = nameInput;
+            
+            // Set tanggal piagam
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('cert-date').innerText = "Tanggal: " + today.toLocaleDateString('id-ID', options);
+
+            // Sembunyikan setup kuis, jalankan game kuis
+            document.getElementById('quiz-setup').classList.add('hidden');
+            document.getElementById('quiz-game').classList.remove('hidden');
+
+            // Reset state
+            currentScore = 0;
+            currentQuestionIndex = 0;
+            document.getElementById('current-score').innerText = currentScore;
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            hasAnswered = false;
+            selectedOption = null;
+            document.getElementById('feedback-box').classList.add('hidden');
+            
+            const q = quizData[currentQuestionIndex];
+            
+            // Update Nomor Soal & Progress Bar
+            document.getElementById('current-question-num').innerText = currentQuestionIndex + 1;
+            const progressPercent = ((currentQuestionIndex + 1) / 10) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progressPercent}%`;
+
+            // Update teks pertanyaan
+            document.getElementById('question-text').innerText = q.question;
+
+            // Render opsi jawaban
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach(opt => {
+                const optButton = document.createElement('button');
+                optButton.id = `opt-${opt.key}`;
+                optButton.className = "w-full p-4 bg-white hover:bg-sky-50 border-2 border-sky-200 hover:border-sky-400 rounded-2xl flex items-center justify-between text-left transition-all font-semibold text-gray-700 btn-bounce shadow-sm";
+                optButton.onclick = () => selectOption(opt.key);
+                
+                optButton.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-sky-100 border border-sky-300 text-sky-800 font-bold flex items-center justify-center">${opt.key}</span>
+                        <span>${opt.text}</span>
+                    </div>
+                    <div class="text-sky-300 hover:text-sky-500"><i class="fa-regular fa-circle"></i></div>
+                `;
+                optionsContainer.appendChild(optButton);
+            });
+        }
+
+        function selectOption(key) {
+            if (hasAnswered) return; // Kunci input jika sudah dijawab
+            
+            hasAnswered = true;
+            selectedOption = key;
+            const q = quizData[currentQuestionIndex];
+            const isCorrect = (key === q.correct);
+
+            // Highlight tombol yang dipilih
+            const selectedBtn = document.getElementById(`opt-${key}`);
+            
+            if (isCorrect) {
+                // Jawaban Benar
+                currentScore += 10;
+                document.getElementById('current-score').innerText = currentScore;
+                
+                selectedBtn.classList.remove('bg-white', 'border-sky-200');
+                selectedBtn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900');
+                selectedBtn.querySelector('div:last-child').innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 text-xl"></i>`;
+                
+                showFeedback(true, q);
+            } else {
+                // Jawaban Salah
+                selectedBtn.classList.remove('bg-white', 'border-sky-200');
+                selectedBtn.classList.add('bg-red-50', 'border-red-400', 'text-red-900');
+                selectedBtn.querySelector('div:last-child').innerHTML = `<i class="fa-solid fa-circle-xmark text-red-500 text-xl"></i>`;
+
+                // Tunjukkan jawaban yang benar
+                const correctBtn = document.getElementById(`opt-${q.correct}`);
+                correctBtn.classList.add('bg-emerald-50', 'border-emerald-400');
+
+                showFeedback(false, q, key);
+            }
+        }
+
+        function showFeedback(isCorrect, q, userKey = null) {
+            const feedbackBox = document.getElementById('feedback-box');
+            const feedbackIcon = document.getElementById('feedback-icon');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackText = document.getElementById('feedback-text');
+
+            feedbackBox.classList.remove('hidden');
+
+            if (isCorrect) {
+                feedbackBox.className = "rounded-2xl p-5 border-2 border-emerald-300 bg-emerald-50 text-emerald-950 mb-6 animate-pulse";
+                feedbackIcon.innerHTML = "🎉";
+                feedbackTitle.innerText = "YAY, KAMU BENAR!";
+                feedbackText.innerText = q.explanation;
+            } else {
+                feedbackBox.className = "rounded-2xl p-5 border-2 border-red-300 bg-red-50 text-red-950 mb-6";
+                feedbackIcon.innerHTML = "💡";
+                feedbackTitle.innerText = "OPS, BELUM TEPAT!";
+                
+                // Cari opsi salah yang dipilih murid untuk penjelasan spesifik
+                const selectedOpt = q.options.find(o => o.key === userKey);
+                feedbackText.innerHTML = `Kamu memilih opsi <b>(${userKey})</b>: ${selectedOpt ? selectedOpt.desc : ""}<br><br><b>Pembahasan Benar:</b> ${q.explanation}`;
+            }
+
+            // Ubah teks tombol jika soal terakhir
+            const btnNext = document.getElementById('btn-next-question');
+            if (currentQuestionIndex === 9) {
+                btnNext.innerHTML = `Lihat Skor Akhir <i class="fa-solid fa-flag-checkered"></i>`;
+            } else {
+                btnNext.innerHTML = `Soal Berikutnya <i class="fa-solid fa-chevron-right"></i>`;
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < 9) {
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
+                // Tampilkan Hasil Akhir
+                document.getElementById('quiz-game').classList.add('hidden');
+                document.getElementById('quiz-result').classList.remove('hidden');
+                document.getElementById('final-score').innerText = currentScore;
+                document.getElementById('final-stats').innerText = `Menjawab benar ${currentScore / 10} dari 10 soal`;
+
+                // Pemicu Selebrasi Confetti jika nilai memuaskan
+                if (currentScore >= 70) {
+                    confetti({
+                        particleCount: 150,
+                        spread: 80,
+                        origin: { y: 0.6 }
+                    });
+                }
+            }
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-setup').classList.remove('hidden');
+            document.getElementById('student-name').value = '';
+        }
+    </script>
+</body>
+</html>
